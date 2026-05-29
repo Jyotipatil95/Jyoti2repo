@@ -1,0 +1,43 @@
+.packages-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: transparent;
+  color: #1976d2; /* primary blue */
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.packages-btn:hover {
+  background-color: #f0f8ff; /* light hover background */
+  border-radius: 0.5rem;
+}
+
+.packages-btn:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.packages-btn[aria-selected="true"] {
+  color: #1976d2;
+  border-bottom: 2px solid #1976d2;
+}
+
+.packages-icon {
+  display: inline-block;
+   margin-bottom: 0.25rem;
+}
+.packages-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+.container {
+  display: flex;        /* flex */
+  flex-direction: column;  /* flex-row */
+  gap: 24px;            /* gap-6 (6 × 4px = 24px) */
+}
