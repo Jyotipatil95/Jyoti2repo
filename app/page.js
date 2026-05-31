@@ -53,15 +53,15 @@ export default function Home() {
               </div>
               <div className="border-start border-2 border-dark mx-0 bg-dark" style={{ height: "40px"  }}></div>
               
-              <div className='d-flex align-items-center justify-content-center col-3'>
+              <div className='d-flex align-items-center justify-content-center col-2'>
                 
                   <SocialIcons />
               </div>
               
               <div className="border-start border-2 border-dark  mx-0 bg-dark" style={{ height: "40px" }}></div>
-              <div className='d-flex align-items-center'>
+              <div className='d-flex align-items-center justify-content-center col-3'>
                   <LoginPopup />
-                  <UserHeader />
+                  {/* <UserHeader /> */}
             
                </div>
             </div>

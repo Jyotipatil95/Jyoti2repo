@@ -12,8 +12,9 @@ import TabsPage from '../Component/tabs/TabsPage';
 import Offerlist from "../Component/Offerlist";
 import FilterPanel from "../Component/FilterPanel";
 import OrderPopup from "../Component/OrderPopup";
-// import LoginPopup from "./Component/Login/LoginPopup";
+//import LoginPopup from "../Component/Login/LoginPopup";
 import Footer from "../Component/Footer";
+//import "./awsConfig";
 export default function Home() {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -51,7 +52,7 @@ export default function Home() {
               
               <div className="border-start border-2 border-dark  mx-0 bg-dark" style={{ height: "40px" }}></div>
               <div className='d-flex align-items-center'>
-                   {/* <LoginPopup /> */}
+                    {/* <LoginPopup /> */}
                   <UserHeader />
             
                </div>
