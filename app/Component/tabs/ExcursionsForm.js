@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getNames } from "country-list";
+
 export default function ExcursionsForm() {
+
+  const countries = getNames();
+  const [country, setCountry] = useState("");
   const [open, setOpen] = useState(false);
   const router = useRouter();
   return (
@@ -16,11 +21,19 @@ export default function ExcursionsForm() {
             </label>
             <div className="position-relative">
                <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-            <input
-              type="text"
-              className="form-control rounded-pill ps-5"
-              placeholder="Select countries or destinations..."
-            />
+                <select
+                className="form-control rounded-pill ps-5"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option value="">Excursions Destinations.</option>
+                {countries.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            
             </div>
             
           </div>

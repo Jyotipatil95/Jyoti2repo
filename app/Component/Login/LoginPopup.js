@@ -184,7 +184,7 @@ export default function AuthPopup() {
   };
 
   // --- SIGNUP ---
-  const handleSignup = async (e) => {
+   const handleSignup = async (e) => {
     e.preventDefault();
     try {
       const result = await signUp({
@@ -195,20 +195,20 @@ export default function AuthPopup() {
           email,
           given_name: firstName,
           family_name: lastName,
-        },
-      }});
-      if (result.nextStep.signUpStep === "CONFIRM_SIGN_UP") {
-        setSuccess("Account created! Please check your email for confirmation.");
-        setMode("confirm"); // switch to confirm step
-      } else {
-        setSuccess("Account created successfully!");
-      }
-      setError("");
-    } catch (err) {
-      setError(err.message);
-      setSuccess("");
-    }
-  };
+         },
+       }});
+       if (result.nextStep.signUpStep === "CONFIRM_SIGN_UP") {
+         setSuccess("Account created! Please check your email for confirmation.");
+         setMode("confirm"); // switch to confirm step
+       } else {
+         setSuccess("Account created successfully!");
+       }
+       setError("");
+     } catch (err) {
+       setError(err.message);
+       setSuccess("");
+     }
+   };
 
   // --- CONFIRM SIGNUP ---
   const handleConfirmSignup = async (e) => {
@@ -271,7 +271,7 @@ export default function AuthPopup() {
     // { deliveryMedium: "EMAIL", destination: "j***@d***.com" }
     
     alert('Verification code sent to your email.');
-    setStep('reset');
+    setStep("reset");
     
   } catch (error) {
   // 1. Logs the full error object structure to the console
@@ -282,22 +282,26 @@ export default function AuthPopup() {
   console.error('Cognito Error Message:', error.message);
 }
 }
-  // async function handleResetPassword() {
-  //   try {
-  //    await confirmResetPassword({
-  //       username: email.trim(),
-  //       confirmationCode: code.trim(),
-  //       newPassword: newPassword,
-  //     });
-  //     alert('Password successfully reset!');
-  //     setStep('login');
-  //   } catch (error) {
-  //     console.error('Error resetting password:', error);
-  //     if (error.name === "CodeMismatchException") {
-  //     alert("Invalid or expired code. Please request a new one.");
-  //   }
-  //   }
-  // }
+  //handle reset password
+  async function handleResetPassword() {
+  try {
+    await confirmResetPassword({
+      username: email.trim(),
+      confirmationCode: code.trim(),
+      newPassword: newPassword.trim(), // optional: trim for safety
+    });
+    
+    alert("Password successfully reset!");
+    setStep("login");
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    if (error.name === "CodeMismatchException") {
+      alert("Invalid or expired code. Please request a new one.");
+    } else {
+      alert(error.message); // show other errors like InvalidPasswordException
+    }
+  }
+}
   return (
     <div className="position-relative d-inline-block">
       {/* Trigger button */}
@@ -352,39 +356,25 @@ export default function AuthPopup() {
                   autoFocus
                 />
               </Form.Group>
-              <div className="password-field">
-                 <label className="form-label">Password</label>
-          <input
-            
-            type={showPassword ? "text" : "password"}
-            className="form-control"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-           <i
-              className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-4`}
-              style={{ cursor: "pointer" , marginTop: "0px" }}
-              onClick={() => setShowPassword(!showPassword)}
-            ></i>
-        </div>
-              {/* <Form.Group className="mb-2">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <span
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{ cursor: "pointer", position: "absolute", right: "10px", top: "10px" }}
-              >
-                {showPassword ? "🙈" : "👁️"}
-              </span>
-              </Form.Group>
-                */}
+             <div className="password-field mb-3">
+  <label className="form-label">Password</label>
+  
+  {/* Wrap input and icon in a relative container */}
+  <div className="position-relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      className="form-control pe-5" // pe-5 adds padding-right so text doesn't overlap the eye
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+    <i
+      className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
+      style={{ cursor: "pointer", zIndex: 10 }}
+      onClick={() => setShowPassword(!showPassword)}
+    ></i>
+  </div>
+</div>
                 <br></br>
               <Button type="submit" variant="primary" className="w-100">
                 Login
@@ -423,28 +413,32 @@ export default function AuthPopup() {
       )}
 
       {step === 'reset' && (
-        <div>
-          <input
-            type="text"
-            placeholder="Enter code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="New password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            
-          />
-           <i
-              className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-4`}
-              style={{ cursor: "pointer" , marginTop: "0px" }}
-              onClick={() => setShowPassword(!showPassword)}
-            ></i>
-          <button onClick={handleForgotPassword}>Reset Password</button>
-        </div>
-      )}
+  <div>
+    <input
+      type="text"
+      placeholder="Enter code"
+      value={code}
+      onChange={(e) => setCode(e.target.value)}
+    />
+
+    <div className="position-relative">
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="New password"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+        className="form-control"
+      />
+      <i
+        className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-4`}
+        style={{ cursor: "pointer" }}
+        onClick={() => setShowPassword(!showPassword)}
+      ></i>
+    </div>
+
+    <button onClick={handleResetPassword}>Reset Password</button>
+  </div>
+)}
     </>
           {/* SIGNUP FORM */}
           {mode === "signup" && (
@@ -481,13 +475,34 @@ export default function AuthPopup() {
     </Form.Group>
 
     <Form.Group className="mb-2">
-      <Form.Label>Password</Form.Label>
+      <div className="password-field mb-3">
+  <label className="form-label">Password</label>
+  
+  {/* Wrap input and icon in a relative container */}
+  <div className="position-relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      className="form-control pe-5" // pe-5 adds padding-right so text doesn't overlap the eye
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+    <i
+      className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
+      style={{ cursor: "pointer", zIndex: 10 }}
+      onClick={() => setShowPassword(!showPassword)}
+    ></i>
+  </div>
+</div>
+      {/* <Form.Label>Password</Form.Label>
       <Form.Control
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-      />
+        
+      /> */}
+       
     </Form.Group>
 
     <Button type="submit" variant="success" className="w-100">
