@@ -32,25 +32,31 @@ import { useState } from "react";
 export default function SearchNav() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-
+  //API expects a JSON payload (POST request) 
   const handleSearch = async () => {
-    try {
-      const res = await fetch(
-        "https://dn5wcoauce.execute-api.us-east-2.amazonaws.com/dev/v1/search/flights",
-        // `https://dn5wcoauce.execute-api.us-east-2.amazonaws.com/dev/v1/search?country=${query}&date=2026-05-01&nights=5`,
+  try {
+    const res = await fetch(
+      "https://dn5wcoauce.execute-api.us-east-2.amazonaws.com/dev/v1/search/flights",
       {
+        method: "POST",
         headers: {
-            "x-api-key": "p80CN1qJdn7hKbNdT0P99lCJdJVmwOV9wft615Tj"
-         }
+          "Content-Type": "application/json",
+          "x-api-key": "p80CN1qJdn7hKbNdT0P99lCJdJVmwOV9wft615Tj"
+        },
+        body: JSON.stringify({
+          country: query,
+          date: "2026-05-01",
+          nights: 5
+        })
       }
-      );
-      const data = await res.json();
-      console.log(data);
-      setResults(data);
-    } catch (error) {
-      console.error("API call failed:", error);
-    }
-  };
+    );
+    const data = await res.json();
+    console.log(data);
+    setResults(data);
+  } catch (error) {
+    console.error("API call failed:", error);
+  }
+};
 
   return (
     <div>
@@ -98,7 +104,8 @@ export default function SearchNav() {
           </div>
         ) : (
           <p className="text-muted">No results yet. Try searching!</p>
-        )}
+        )
+        }
       </div>
     </div>
   );

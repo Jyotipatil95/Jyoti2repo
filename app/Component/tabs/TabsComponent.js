@@ -53,9 +53,9 @@ const TabsComponent = ({ items }) => {
                 <img
                   src={item.icon}
                   alt={item.title}
-                  width="30"
-                  height="30"
-                  className="mb-1"
+                  width="40"
+                  height="40"
+                  className="mb-0"
                 />
                 {item.title}
               </button>

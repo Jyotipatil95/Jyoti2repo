@@ -310,7 +310,7 @@ export default function AuthPopup() {
       onClick={() => setShowPopup(!showPopup)}>
         Login
       </Button>
-
+    
       {/* Popup card */}
       {showPopup && (
         <div

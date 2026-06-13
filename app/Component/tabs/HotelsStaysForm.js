@@ -76,7 +76,7 @@ export default function HotelsStaysForm() {
                 <path d="M11 6a5 5 0 1 0-1.001 9.9A5 5 0 0 0 11 6zm-1 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
                 <path d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.415 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
               </svg>
-              <span>Look For</span>
+              <span>Search</span>
             </button>
           </div>
 

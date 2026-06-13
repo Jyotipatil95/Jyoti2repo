@@ -61,8 +61,10 @@ export default function Home() {
               <div className="border-start border-2 border-dark  mx-0 bg-dark" style={{ height: "40px" }}></div>
               <div className='d-flex align-items-center justify-content-center col-3'>
                   <LoginPopup />
-                  {/* <UserHeader /> */}
-            
+                  {/* <UserHeader />  */}
+                {/* User icon */}
+             <i className="bi bi-person-circle fs-3  text-primary rounded-circle p-1"></i>
+                
                </div>
             </div>
              <br></br>

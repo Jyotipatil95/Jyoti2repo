@@ -8,6 +8,8 @@ import Footer from "./Component/Footer";
 import "./styles/packages.css";
 import "./styles/globals.css";
 import "./awsConfig";
+//import "./amplifyClient"; // ✅ initializes Amplify on client side
+import "./awsConfig";
 export const metadata = { title: 'Lets go for Vacation' };
 
 export default function RootLayout({ children }) {

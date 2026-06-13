@@ -2,87 +2,92 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getNames } from "country-list";
+import GuestRoomSelector from './GuestRoomSelector';
+export default function ExcursionsForm() {
 
-export default function PackageForm() {
-  const router = useRouter();
   const countries = getNames();
-
-  // ✅ State hooks
   const [country, setCountry] = useState("");
-  const [date, setDate] = useState("");
-  const [nights, setNights] = useState("1");
-
-  const handleSearch = () => {
-    // Example: navigate with query params
-    router.push(
-      `/PacDetails?country=${encodeURIComponent(country)}&date=${date}&nights=${nights}`
-    );
-  };
-
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
   return (
     <div role="tabpanel" id="simple-tabpanel-0" aria-labelledby="simple-tab-0">
-      <div className="container">
+      <div className="container ">
         <form className="row g-3 align-items-end">
 
-          {/* Countries */}
+          {/* Countries or Destinations */}
           <div className="col-md-3">
             <label className="form-label text-white fw-bold text-uppercase small">
-             Destinations
+              To
             </label>
             <div className="position-relative">
-              <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-              <select
+               <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                <select
                 className="form-control rounded-pill ps-5"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               >
-                <option value="">Select country...</option>
+                <option value="">Where are you going?</option>
                 {countries.map((c) => (
                   <option key={c} value={c}>
                     {c}
                   </option>
                 ))}
               </select>
+            
             </div>
+            
           </div>
 
-          {/* Date */}
-          <div className="col-md-3">
+          {/* When */}
+          <div className="col-md-2">
             <label className="form-label text-white fw-bold text-uppercase small">
-              When
+              Check-in
             </label>
             <input
               type="date"
               className="form-control rounded-pill"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+               placeholder="Select date"
             />
+            {/* <div className="form-text">Select date</div> */}
           </div>
-
-          {/* Nights */}
-          <div className="col-md-3">
+            <div className="col-md-2">
             <label className="form-label text-white fw-bold text-uppercase small">
-              Number of Nights
+             Check-out
             </label>
-            <select
-              className="form-select rounded-pill"
-              value={nights}
-              onChange={(e) => setNights(e.target.value)}
-            >
-              {[...Array(10)].map((_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1} nights
-                </option>
-              ))}
-            </select>
+            <input
+              type="date"
+              className="form-control rounded-pill"
+               placeholder="Select date"
+            />
+            {/* <div className="form-text">Select date</div> */}
+          </div>
+          {/* Number of Guests */}
+          <div className="col-md-2">
+            <GuestRoomSelector/>
+            {/* <label className="form-label text-white fw-bold text-uppercase small">
+             Select Guests
+            </label>
+            <select className="form-select rounded-pill">
+              <option>1 Guest</option>
+              <option>2 Guests</option>
+              <option>3 Guests</option>
+              <option>4 Guests</option>
+              <option>5 Guests</option>
+              <option>6 Guests</option>
+              <option>7 Guests</option>
+              <option>8 Guests</option>
+              <option>9 Guests</option>
+              <option>10 Guests</option>
+              
+            </select> */}
           </div>
 
           {/* Button */}
-          <div className="col-md-3 d-grid">
+          <div className="col-md-2 d-grid">
             <button
               type="button"
               className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
-              onClick={handleSearch}
+             onClick={() => router.push("/ExcuDetails")}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,6 +103,7 @@ export default function PackageForm() {
               <span>Search</span>
             </button>
           </div>
+
         </form>
       </div>
     </div>
