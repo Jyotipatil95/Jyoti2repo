@@ -16,7 +16,7 @@ import { getCurrentUser } from "aws-amplify/auth";
 import {Form, Button, Alert } from "react-bootstrap";
 
 export default function AuthPopup() {
-   const [firstName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [mode, setMode] = useState("login"); // login | signup | confirm | mfa
@@ -303,14 +303,18 @@ export default function AuthPopup() {
   }
 }
   return (
-    <div className="position-relative d-inline-block">
+    <div className="position-relative d-inline-block ">
       {/* Trigger button */}
       <Button variant="primary" 
       className="btn btn-primary fw-bold rounded-pill position-relative bottom-0 end-0 m-4 px-4 py-2 shadow-lg"
       onClick={() => setShowPopup(!showPopup)}>
         Login
       </Button>
-    
+      {/* User icon */}
+        <i className="bi bi-person-circle fs-3 text-primary rounded-circle p-2 me-4 icon-down"
+          title={userSession?.signInDetails?.loginId}
+        ></i>
+
       {/* Popup card */}
       {showPopup && (
         <div

@@ -89,23 +89,20 @@ export default function SearchNav() {
 
       {/* Results */}
       <div className="container mt-4">
-        {results.length > 0 ? (
-          <div className="row">
-            {results.map((item, idx) => (
-              <div key={idx} className="col-md-4 mb-3">
-                <div className="card shadow-sm">
-                  <div className="card-body">
-                    <h5 className="card-title">{item.name}</h5>
-                    <p className="card-text">{item.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {results.length > 0 && (
+  <div className="row">
+    {results.map((item, idx) => (
+      <div key={idx} className="col-md-4 mb-3">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h5 className="card-title">{item.name}</h5>
+            <p className="card-text">{item.description}</p>
           </div>
-        ) : (
-          <p className="text-muted">No results yet. Try searching!</p>
-        )
-        }
+        </div>
+      </div>
+    ))}
+  </div>
+)}
       </div>
     </div>
   );

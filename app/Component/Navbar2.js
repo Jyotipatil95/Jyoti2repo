@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 
 export default function Navbar2() {
   const router = useRouter();
-
   return (
     <nav className="navbar navbar-light bg-light px-4">
       

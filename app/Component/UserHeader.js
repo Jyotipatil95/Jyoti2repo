@@ -11,11 +11,7 @@ export default function UserHeader() {
     {/* <LoginPopup /> */}
  
 
-  {/* User icon */}
-  <i className="bi bi-person-circle fs-3"></i>
-
-  {/* Divider (hidden on small screens) */}
-  <span className="text-secondary d-none d-md-inline">|</span>
+  
 </div>
   );
 }

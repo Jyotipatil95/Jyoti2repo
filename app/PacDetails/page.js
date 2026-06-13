@@ -35,13 +35,13 @@ export default function Home() {
             src="/images/Mlogo.png"
             className="d-block w-100"
             alt="Slide 2"
-            style={{ height: "200px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
+            style={{ height: "185px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
             />
           
           </div>
           <div className='flex-1 col-8 '>
             <div className='d-flex align-items-center justify-content-end' >
-              <div className='d-flex align-items-center me-4 col-3' >
+              <div className='d-flex align-items-center justify-content-end me-4 col-3' >
                 <ContactHeader />
               </div>
               <div className="border-start border-2 border-dark mx-0 bg-dark" style={{ height: "40px"  }}></div>
@@ -72,7 +72,7 @@ export default function Home() {
         
       </section>
 
-      <section className="container my-0 m-0">
+      <section className="container my-0 mt-0">
          {/* tab section */}
         <div className="row bg-info" style={{borderRadius: "20px"}}>
                   <div>

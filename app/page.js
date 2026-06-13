@@ -34,7 +34,7 @@ export default function Home() {
         <a className="navbar-brand" href="#">EduSite</a>
       </nav> */}
 
-      <section className=" text-dark text-center ">
+      <section className=" text-dark text-center mb-0">
          {/* header section */}
         <div className='row'> 
           <div className='col-4' >
@@ -42,18 +42,18 @@ export default function Home() {
             src="/images/Mlogo.png"
             className="d-block w-100"
             alt="Slide 2"
-            style={{ height: "200px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
+            style={{ height: "185px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
             />
           
           </div>
           <div className='flex-1 col-8 '>
             <div className='d-flex align-items-center justify-content-end' >
-              <div className='d-flex align-items-center me-4 col-3' >
+              <div className='d-flex align-items-center justify-content-end me-4 col-3' >
                 <ContactHeader />
               </div>
               <div className="border-start border-2 border-dark mx-0 bg-dark" style={{ height: "40px"  }}></div>
               
-              <div className='d-flex align-items-center justify-content-center col-2'>
+              <div className='d-flex align-items-center justify-content-center col-2 '>
                 
                   <SocialIcons />
               </div>
@@ -62,9 +62,7 @@ export default function Home() {
               <div className='d-flex align-items-center justify-content-center col-3'>
                   <LoginPopup />
                   {/* <UserHeader />  */}
-                {/* User icon */}
-             <i className="bi bi-person-circle fs-3  text-primary rounded-circle p-1"></i>
-                
+                               
                </div>
             </div>
              <br></br>
@@ -82,7 +80,7 @@ export default function Home() {
         
       </section>
 
-      <section className="container my-2">
+      <section className="container my-2 mt-0">
          {/* tab section */}
         <div className="row bg-info" style={{borderRadius: "20px"}}>
                   <div>
