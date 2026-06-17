@@ -60,12 +60,12 @@ export default function SearchNav() {
 
   return (
     <div>
-      <nav className="d-flex justify-content-center align-items-center bg-warning w-100 py-3 rounded-top custom-rounded-bl">
+      <nav className="d-flex justify-content-start px-5 align-items-center bg-warning w-100 py-3 custom-rounded-tl">
         <div className="position-relative w-50">
           {/* Search Input */}
           <input
             type="text"
-            placeholder="Search country..."
+            placeholder="Search ..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="form-control ps-5 rounded-pill fw-semibold text-dark"
@@ -90,19 +90,19 @@ export default function SearchNav() {
       {/* Results */}
       <div className="container mt-4">
         {results.length > 0 && (
-  <div className="row">
-    {results.map((item, idx) => (
-      <div key={idx} className="col-md-4 mb-3">
-        <div className="card shadow-sm">
-          <div className="card-body">
-            <h5 className="card-title">{item.name}</h5>
-            <p className="card-text">{item.description}</p>
+      <div className="row">
+          {results.map((item, idx) => (
+          <div key={idx} className="col-md-4 mb-3">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title">{item.name}</h5>
+                <p className="card-text">{item.description}</p>
+              </div>
+            </div>
           </div>
-        </div>
+          ))}
       </div>
-    ))}
-  </div>
-)}
+    )}
       </div>
     </div>
   );

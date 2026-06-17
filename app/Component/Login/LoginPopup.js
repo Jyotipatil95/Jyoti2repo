@@ -306,7 +306,7 @@ export default function AuthPopup() {
     <div className="position-relative d-inline-block ">
       {/* Trigger button */}
       <Button variant="primary" 
-      className="btn btn-primary fw-bold rounded-pill position-relative bottom-0 end-0 m-4 px-4 py-2 shadow-lg"
+      className="btn btn-primary fw-bold rounded-pill position-relative bottom-0 end-0 m-4 px-4 py-2 shadow-lg "
       onClick={() => setShowPopup(!showPopup)}>
         Login
       </Button>

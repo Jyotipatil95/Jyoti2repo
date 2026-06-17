@@ -12,32 +12,32 @@ import { Amplify } from "aws-amplify";
       },
     },
   },
-  API: {
-    REST: {
-      myApi: {
-        endpoint: 'https://dn5wcoauce.execute-api.us-east-2.amazonaws.com/dev/v1/auth/login',
-        region: "us-east-2",
-      },
-    },
-  },
-  API: {
-    endpoints: [
-      {
-        name: "TravelAPI", // logical name
-        endpoint: "https://your-api-id.execute-api.ap-south-1.amazonaws.com/dev", // API Gateway endpoint
-        region: "ap-south-1",
-      },
-    ],
-   },
-   API: {
-  endpoints: [
-    {
-      name: "LGVApi",
-      endpoint: "https://your-api-id.execute-api.ap-south-1.amazonaws.com/dev",
-      region: "ap-south-1",
-    },
-  ],
-}
+//   API: {
+//     REST: {
+//       myApi: {
+//         endpoint: 'https://dn5wcoauce.execute-api.us-east-2.amazonaws.com/dev/v1/auth/login',
+//         region: "us-east-2",
+//       },
+//     },
+//   },
+//   API: {
+//     endpoints: [
+//       {
+//         name: "TravelAPI", // logical name
+//         endpoint: "https://your-api-id.execute-api.ap-south-1.amazonaws.com/dev", // API Gateway endpoint
+//         region: "ap-south-1",
+//       },
+//     ],
+//    },
+//    API: {
+//   endpoints: [
+//     {
+//       name: "LGVApi",
+//       endpoint: "https://your-api-id.execute-api.ap-south-1.amazonaws.com/dev",
+//       region: "ap-south-1",
+//     },
+//   ],
+// }
 };
 console.log("Amplify Config Loaded", config);
 

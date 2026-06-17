@@ -18,7 +18,7 @@ export default function Carousel() {
       {/* Slides */}
       <div className="carousel-inner">
 
-        <div className="carousel-item active position-relative">
+        <div className="carousel-item active position-relative "data-bs-interval="3000">
             <img
               src="/images/photo1.png"
               className="d-block w-100"
@@ -37,11 +37,25 @@ export default function Carousel() {
               fontSize: "5rem", // mobile default
             }}
           >
-            Plan Your Next Trip
+           <span>Plan Your</span>
+            <span style={{ display: "block" }}>Next Trip</span>
+          </h5>
+           <h5
+            className=" text-orange text-start"
+            style={{
+              position: "absolute",
+              bottom: "-10px",
+              right: "20px",
+              margin: 0,
+              fontSize: "6rem", // mobile default
+              color: "rgb(255, 101, 0)",
+            }}
+          >
+           Destinations
           </h5>
         </div>
 
-        <div className="carousel-item active position-relative">
+        <div className="carousel-item active position-relative "data-bs-interval="3000">
             <img
               src="/images/photo2.png"
               className="d-block w-100"
@@ -60,11 +74,25 @@ export default function Carousel() {
               fontSize: "5rem", // mobile default
             }}
           >
-            Plan Your Next Trip
+            <span>Plan Your</span>
+            <span style={{ display: "block" }}>Next Trip</span>
+          </h5>
+           <h5
+            className=" text-orange text-start"
+            style={{
+              position: "absolute",
+              bottom: "-10px",
+              right: "20px",
+              margin: 0,
+              fontSize: "6rem", // mobile default
+              color: "rgb(255, 101, 0)",
+            }}
+          >
+           Destinations
           </h5>
         </div>
 
-        <div className="carousel-item active position-relative">
+        <div className="carousel-item active position-relative" data-bs-interval="3000">
             <img
               src="/images/photo3.png"
               className="d-block w-100"
@@ -83,20 +111,21 @@ export default function Carousel() {
               fontSize: "5rem", // mobile default
             }}
           >
-            Plan Your Next Trip
+           <span>Plan Your</span>
+            <span style={{ display: "block" }}>Next Trip</span>
           </h5>
           <h5
-            className="fw-bold text-orange text-start"
+            className=" text-orange text-start"
             style={{
               position: "absolute",
-              bottom: "20px",
+              bottom: "-10px",
               right: "20px",
               margin: 0,
-              fontSize: "5rem", // mobile default
+              fontSize: "6rem", // mobile default
               color: "rgb(255, 101, 0)",
             }}
           >
-           Destination
+           Destinations
           </h5>
         </div>
 

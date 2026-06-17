@@ -43,7 +43,7 @@
 }
 .bg-warning {
     --bs-bg-opacity: 1;
-    background: rgb(255,101,0) !important;
+    background: rgb(255, 115, 0) !important;
 }
 .bg-info {
     --bs-bg-opacity: 1;
