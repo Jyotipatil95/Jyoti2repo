@@ -1,5 +1,5 @@
 "use client";
-import {  useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   signIn,
   confirmSignIn,
@@ -9,17 +9,16 @@ import {
   signOut,
   resetPassword,
   confirmResetPassword,
+  getCurrentUser,
 } from "aws-amplify/auth";
-import { fetchAuthSession } from "aws-amplify/auth";
-import { post } from "aws-amplify/api";
-import { getCurrentUser } from "aws-amplify/auth";
-import {Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
 export default function AuthPopup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [mode, setMode] = useState("login"); // login | signup | confirm | mfa
+  // Unified mode state: login | signup | confirm | mfa | forgot | reset
+  const [mode, setMode] = useState("login"); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mfaCode, setMfaCode] = useState("");
@@ -27,31 +26,31 @@ export default function AuthPopup() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [userSession, setUserSession] = useState(null);
- //forget password
-  //const [email, setEmail] = useState('');
+  
+  // Forgot password specific fields
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [step, setStep] = useState('login'); // login | forgot | reset
+  
   const popupRef = useRef(null);
-
   const [showPassword, setShowPassword] = useState(false);
 
- //get current user
-    useEffect(() => {
+  // Get current user on load
+  useEffect(() => {
     checkUser();
-    }, []);
-    //Auto clear msg
-        useEffect(() => {
-      if (success || error) {
-        const timer = setTimeout(() => {
-          setSuccess("");
-          setError("");
-        }, 4000);
+  }, []);
 
-        return () => clearTimeout(timer);
-      }
-     }, [success, error]);
-// Close popup when clicking outside
+  // Auto-clear success/error notifications
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        setSuccess("");
+        setError("");
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, error]);
+
+  // Close popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -69,110 +68,49 @@ export default function AuthPopup() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showPopup]);
-  
-  // --- LOGIN ---
-  
-//    const handleLogin = async (e) => {
-//   e.preventDefault();
 
-//   try {
-//     // Step 1: Sign in user with Cognito
-//     const signInResult = await signIn({
-//       username: email.trim(),
-//       password,
-//     });
-
-//     console.log("Sign in tracking:", signInResult);
-
-//     // Guard rail: Stop if Cognito requires extra steps (like MFA or Force Change Password)
-//     if (signInResult.nextStep.signInStep !== 'DONE') {
-//       console.warn("Additional authentication steps required:", signInResult.nextStep);
-//       return;
-//     }
-
-//     // Optional Step 2: Session retrieval
-//     // Note: Since your /v1/auth/login API has "Authorization: NONE", you don't strictly 
-//     // need this token for this specific call. Keep it if your backend code manually 
-//     // parses headers despite API Gateway's settings, otherwise you can remove this step.
-//     const session = await fetchAuthSession();
-//     const token = session.tokens?.idToken?.toString();
-
-//     // Step 3: Call API Gateway (Matching image_567ba3.jpg & image_567c3d.jpg specifications)
-//     const restOperation = post({
-//       apiName: "myApi",
-//       path: "/v1/auth/login",
-//       options: {
-//         headers: {
-//           "Content-Type": "application/json",
-//           // Only include Authorization if your underlying Lambda/Backend code parses it manually
-//           ...(token && { "Authorization": `Bearer ${token}` }) 
-//         },
-//         body: {
-//           username: email.trim(),
-//         },
-//       },
-//     });
-
-//     // Handle and parse the response safely
-//     const response = await restOperation.response;
-//     const data = await response.body.json();
-
-//     console.log("API response:", data);
-
-//   } catch (error) {
-//     console.error("AUTH OR API ERROR:", error);
-//   }
-// };
-    
-    const handleLogin = async (e) => {
-  e.preventDefault();
-
-  try {
-    const response = await signIn({
-      username: email,
-      password,
-    });
-
-    if (
-      response.nextStep.signInStep ===
-        "CONFIRM_SIGN_IN_WITH_SMS_CODE" ||
-      response.nextStep.signInStep ===
-        "CONFIRM_SIGN_IN_WITH_TOTP_CODE"
-    ) {
-      setMode("mfa");
-    } else if (response.isSignedIn) {
-      const currentUser = await getCurrentUser();
-
-      setUserSession(currentUser);
-
-      setSuccess("Login successful");
-      setShowPopup(true);
-    }
-
-    setError("");
-  } catch (err) {
-    setError(err.message);
-    setSuccess("");
-  }
-    };
-  //checkuser
-     
   const checkUser = async () => {
-  try {
-    const user = await getCurrentUser();
+    try {
+      const user = await getCurrentUser();
+      console.log("CURRENT USER:", user);
+      setUserSession(user);
+    } catch (error) {
+      console.log("AUTH ERROR:", error);
+    }
+  };
 
-    console.log("CURRENT USER:", user);
+  // --- LOGIN ---
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await signIn({
+        username: email,
+        password,
+      });
 
-    setUserSession(user);
-  } catch (error) {
-    console.log("AUTH ERROR:", error);
-  }
-};
+      if (
+        response.nextStep.signInStep === "CONFIRM_SIGN_IN_WITH_SMS_CODE" ||
+        response.nextStep.signInStep === "CONFIRM_SIGN_IN_WITH_TOTP_CODE"
+      ) {
+        setMode("mfa");
+      } else if (response.isSignedIn) {
+        const currentUser = await getCurrentUser();
+        setUserSession(currentUser);
+        setSuccess("Login successful");
+        setShowPopup(true);
+      }
+      setError("");
+    } catch (err) {
+      setError(err.message);
+      setSuccess("");
+    }
+  };
+
   // --- MFA ---
   const handleMfaSubmit = async (e) => {
     e.preventDefault();
     try {
-      const loggedUser = await confirmSignIn({challengeResponse: mfaCode,});
+      const loggedUser = await confirmSignIn({ challengeResponse: mfaCode });
       setSuccess(`MFA verified. Welcome ${loggedUser.username}`);
       setMode("login");
       setError("");
@@ -184,31 +122,32 @@ export default function AuthPopup() {
   };
 
   // --- SIGNUP ---
-   const handleSignup = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     try {
       const result = await signUp({
         username: email,
-      password,
-      options: {
-        userAttributes: {
-          email,
-          given_name: firstName,
-          family_name: lastName,
-         },
-       }});
-       if (result.nextStep.signUpStep === "CONFIRM_SIGN_UP") {
-         setSuccess("Account created! Please check your email for confirmation.");
-         setMode("confirm"); // switch to confirm step
-       } else {
-         setSuccess("Account created successfully!");
-       }
-       setError("");
-     } catch (err) {
-       setError(err.message);
-       setSuccess("");
-     }
-   };
+        password,
+        options: {
+          userAttributes: {
+            email,
+            given_name: firstName,
+            family_name: lastName,
+          },
+        },
+      });
+      if (result.nextStep.signUpStep === "CONFIRM_SIGN_UP") {
+        setSuccess("Account created! Please check your email for confirmation.");
+        setMode("confirm");
+      } else {
+        setSuccess("Account created successfully!");
+      }
+      setError("");
+    } catch (err) {
+      setError(err.message);
+      setSuccess("");
+    }
+  };
 
   // --- CONFIRM SIGNUP ---
   const handleConfirmSignup = async (e) => {
@@ -251,78 +190,83 @@ export default function AuthPopup() {
     }
   };
 
-  //forgot password
-  // async function handleForgotPassword() {
-  //   try {
-  //    await resetPassword({ username: email });
-  //     alert('Verification code sent to your email.');
-  //     setStep('reset');
-  //   } catch (error) {
-  //     console.error('Error sending reset code:', error);
-  //   }
-  // }
-  //handle forgot password
-  async function handleForgotPassword() {
+  // --- FORGOT PASSWORD ---
+  const handleForgotPassword = async (e) => {
+  e.preventDefault();
+  setError(''); // Clear previous errors
+  setSuccess('');
+
   try {
     const output = await resetPassword({ username: email.trim() });
     console.log("Code delivery details:", output.nextStep.codeDeliveryDetails);
+    setSuccess('Verification code sent to your email.');
+    setMode("reset");
+  } catch (err) {
+    console.error("Error resetting password:", err);
     
-    // This will print something like: 
-    // { deliveryMedium: "EMAIL", destination: "j***@d***.com" }
-    
-    alert('Verification code sent to your email.');
-    setStep("reset");
-    
-  } catch (error) {
-  // 1. Logs the full error object structure to the console
-  console.error('Full Amplify Error Object:', error); 
-  
-  // 2. Grabs the specific Cognito message (e.g., "UserNotFoundException")
-  console.error('Cognito Error Name:', error.name);
-  console.error('Cognito Error Message:', error.message);
-}
-}
-  //handle reset password
-  async function handleResetPassword() {
-  try {
-    await confirmResetPassword({
-      username: email.trim(),
-      confirmationCode: code.trim(),
-      newPassword: newPassword.trim(), // optional: trim for safety
-    });
-    
-    alert("Password successfully reset!");
-    setStep("login");
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    if (error.name === "CodeMismatchException") {
-      alert("Invalid or expired code. Please request a new one.");
+    // Catching the limit exceeded error specifically
+    if (err.name === 'LimitExceededException' || err.message.includes('Limit exceeded')) {
+      setError('Too many requests. Please wait a few minutes before trying again.');
     } else {
-      alert(error.message); // show other errors like InvalidPasswordException
+      setError(err.message || 'An error occurred. Please try again.');
     }
   }
-}
+};
+  // async function handleForgotPassword(e) {
+  //   e.preventDefault();
+  //   try {
+  //     const output = await resetPassword({ username: email.trim() });
+  //     console.log("Code delivery details:", output.nextStep.codeDeliveryDetails);
+  //     setSuccess('Verification code sent to your email.');
+  //     setMode("reset");
+  //   } catch (error) {
+  //     setError(error.message);
+  //     console.error('Full Amplify Error Object:', error);
+  //   }
+  // }
+
+  // --- RESET PASSWORD ---
+  async function handleResetPassword(e) {
+    e.preventDefault();
+    try {
+      await confirmResetPassword({
+        username: email.trim(),
+        confirmationCode: code.trim(),
+        newPassword: newPassword.trim(),
+      });
+      setSuccess("Password successfully reset!");
+      setMode("login");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      if (error.name === "CodeMismatchException") {
+        setError("Invalid or expired code. Please request a new one.");
+      } else {
+        setError(error.message);
+      }
+    }
+  }
+
   return (
     <div className="position-relative d-flex align-items-center justify-content-end gap-2 gap-lg-4">
       {/* Trigger button */}
-       <Button
-    variant="primary"
-    className="fw-bold rounded-pill px-3 py-1 shadow-lg"
-    onClick={() => setShowPopup(!showPopup)}
-  >
-    Login
-  </Button>
+      <Button
+        variant="primary"
+        className="fw-bold rounded-pill px-3 py-1 shadow-lg"
+        onClick={() => setShowPopup(!showPopup)}
+      >
+        Login
+      </Button>
 
-  {/* User icon */}
-  <i
-    className="bi bi-person-circle fs-3 text-primary rounded-circle p-2 icon-down"
-    title={userSession?.signInDetails?.loginId}
-  ></i>
+      {/* User icon */}
+      <i
+        className="bi bi-person-circle fs-3 text-primary rounded-circle p-2 icon-down"
+        title={userSession?.signInDetails?.loginId}
+      ></i>
 
       {/* Popup card */}
       {showPopup && (
         <div
-        ref={popupRef} 
+          ref={popupRef}
           className="card shadow position-absolute p-3"
           style={{ top: "110%", left: 0, width: "300px", zIndex: 1000 }}
         >
@@ -331,13 +275,15 @@ export default function AuthPopup() {
             {mode === "signup" && "Create Account"}
             {mode === "confirm" && "Confirm Account"}
             {mode === "mfa" && "Verify MFA"}
+            {mode === "forgot" && "Forgot Password"}
+            {mode === "reset" && "Reset Password"}
           </h5>
-           <button
-              type="button"
-              className="btn-close position-absolute top-0 end-0 m-2"
-              aria-label="Close"
-              onClick={() => setShowPopup(false)}
-            ></button>
+          <button
+            type="button"
+            className="btn-close position-absolute top-0 end-0 m-2"
+            aria-label="Close"
+            onClick={() => setShowPopup(false)}
+          ></button>
 
           {error && <Alert variant="danger">{error}</Alert>}
           {success && <Alert variant="success">{success}</Alert>}
@@ -353,7 +299,7 @@ export default function AuthPopup() {
             </Button>
           )}
 
-          {/* LOGIN FORM */}
+          {/* 1. LOGIN FORM */}
           {mode === "login" && !userSession && (
             <Form onSubmit={handleLogin}>
               <Form.Group className="mb-2">
@@ -366,26 +312,36 @@ export default function AuthPopup() {
                   autoFocus
                 />
               </Form.Group>
-             <div className="password-field mb-3">
-  <label className="form-label">Password</label>
-  
-  {/* Wrap input and icon in a relative container */}
-  <div className="position-relative">
-    <input
-      type={showPassword ? "text" : "password"}
-      className="form-control pe-5" // pe-5 adds padding-right so text doesn't overlap the eye
-      placeholder="Password"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-    />
-    <i
-      className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
-      style={{ cursor: "pointer", zIndex: 10 }}
-      onClick={() => setShowPassword(!showPassword)}
-    ></i>
-  </div>
-</div>
-                <br></br>
+              <div className="password-field mb-3">
+                <label className="form-label">Password</label>
+                <div className="position-relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control pe-5"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <i
+                    className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
+                    style={{ cursor: "pointer", zIndex: 10 }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  ></i>
+                </div>
+              </div>
+              
+              {/* Forgot password explicitly bound within the Login block */}
+              <div className="text-end mb-3">
+                <Button 
+                  variant="link" 
+                  className="p-0 text-decoration-none sm" 
+                  onClick={() => setMode('forgot')}
+                >
+                  Forgot Password?
+                </Button>
+              </div>
+
               <Button type="submit" variant="primary" className="w-100">
                 Login
               </Button>
@@ -396,139 +352,137 @@ export default function AuthPopup() {
               >
                 New user? Create Account
               </Button>
-              
             </Form>
           )}
 
-          {/* forgot password */}
-          <>
-      {step === 'login' && (
-        <div>
-          {/* your existing login form */}
-          <button onClick={() => setStep('forgot')}>Forgot Password?</button>
-          
-        </div>
-      )}
+          {/* 2. FORGOT PASSWORD FORM */}
+          {mode === 'forgot' && (
+            <Form onSubmit={handleForgotPassword}>
+              <Form.Group className="mb-3">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Button type="submit" variant="primary" className="w-100 mb-2">
+                Send Code
+              </Button>
+              <Button variant="link" className="w-100" onClick={() => setMode('login')}>
+                Back to Login
+              </Button>
+            </Form>
+          )}
 
-      {step === 'forgot' && (
-        <div>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button onClick={handleForgotPassword}>Send Code</button>
-        </div>
-      )}
+          {/* 3. RESET PASSWORD FORM */}
+          {mode === 'reset' && (
+            <Form onSubmit={handleResetPassword}>
+              <Form.Group className="mb-2">
+                <Form.Label>Verification Code</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter code"
+                  autoComplete="one-time-code" // <-- Prevents email autofill
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-      {step === 'reset' && (
-  <div>
-    <input
-      type="text"
-      placeholder="Enter code"
-      value={code}
-      onChange={(e) => setCode(e.target.value)}
-    />
+              <Form.Group className="mb-3">
+                <Form.Label>New Password</Form.Label>
+                <div className="position-relative">
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="New password"
+                    autoComplete="new-password" // <-- Tells browser this is a new password
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                  <i
+                    className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
+                    style={{ cursor: "pointer", zIndex: 10 }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  ></i>
+                </div>
+              </Form.Group>
 
-    <div className="position-relative">
-      <input
-        type={showPassword ? "text" : "password"}
-        placeholder="New password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        className="form-control"
-      />
-      <i
-        className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-4`}
-        style={{ cursor: "pointer" }}
-        onClick={() => setShowPassword(!showPassword)}
-      ></i>
-    </div>
+              <Button type="submit" variant="success" className="w-100">
+                Reset Password
+              </Button>
+            </Form>
+          )}
 
-    <button onClick={handleResetPassword}>Reset Password</button>
-  </div>
-)}
-    </>
-          {/* SIGNUP FORM */}
+          {/* 4. SIGNUP FORM */}
           {mode === "signup" && (
-        <Form onSubmit={handleSignup}>
-          <Form.Group className="mb-2">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-          </Form.Group>
+            <Form onSubmit={handleSignup}>
+              <Form.Group className="mb-2">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-    <Form.Group className="mb-2">
-      <Form.Label>Last Name</Form.Label>
-      <Form.Control
-        type="text"
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
-        required
-      />
-    </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-    <Form.Group className="mb-2">
-      <Form.Label>Email</Form.Label>
-      <Form.Control
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        autoFocus
-      />
-    </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-    <Form.Group className="mb-2">
-      <div className="password-field mb-3">
-  <label className="form-label">Password</label>
-  
-  {/* Wrap input and icon in a relative container */}
-  <div className="position-relative">
-    <input
-      type={showPassword ? "text" : "password"}
-      className="form-control pe-5" // pe-5 adds padding-right so text doesn't overlap the eye
-      placeholder="Password"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-    />
-    <i
-      className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
-      style={{ cursor: "pointer", zIndex: 10 }}
-      onClick={() => setShowPassword(!showPassword)}
-    ></i>
-  </div>
-</div>
-      {/* <Form.Label>Password</Form.Label>
-      <Form.Control
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        
-      /> */}
-       
-    </Form.Group>
+              <Form.Group className="mb-3">
+                <label className="form-label">Password</label>
+                <div className="position-relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control pe-5"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <i
+                    className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute top-50 end-0 translate-middle-y me-3 text-muted`}
+                    style={{ cursor: "pointer", zIndex: 10 }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  ></i>
+                </div>
+              </Form.Group>
 
-    <Button type="submit" variant="success" className="w-100">
-      Sign Up
-    </Button>
-    <Button
-      variant="link"
-      className="w-100 mt-2"
-      onClick={() => setMode("login")}
-    >
-      Already have an account? Login
-    </Button>
-  </Form>
-)}
+              <Button type="submit" variant="success" className="w-100">
+                Sign Up
+              </Button>
+              <Button
+                variant="link"
+                className="w-100 mt-2"
+                onClick={() => setMode("login")}
+              >
+                Already have an account? Login
+              </Button>
+            </Form>
+          )}
 
-          {/* CONFIRM SIGNUP FORM */}
+          {/* 5. CONFIRM SIGNUP FORM */}
           {mode === "confirm" && (
             <Form onSubmit={handleConfirmSignup}>
               <Form.Group className="mb-2">
@@ -553,24 +507,16 @@ export default function AuthPopup() {
               <Button type="submit" variant="success" className="w-100">
                 Confirm Sign Up
               </Button>
-              <Button
-                variant="link"
-                className="w-100 mt-2"
-                onClick={handleResendCode}
-              >
+              <Button variant="link" className="w-100 mt-2" onClick={handleResendCode}>
                 Resend Code
               </Button>
-              <Button
-                variant="link"
-                className="w-100 mt-2"
-                onClick={() => setMode("login")}
-              >
+              <Button variant="link" className="w-100 mt-2" onClick={() => setMode("login")}>
                 Back to Login
               </Button>
             </Form>
           )}
 
-          {/* MFA FORM */}
+          {/* 6. MFA FORM */}
           {mode === "mfa" && (
             <Form onSubmit={handleMfaSubmit}>
               <Form.Group className="mb-2">
@@ -593,21 +539,3 @@ export default function AuthPopup() {
     </div>
   );
 }
-// try {
-//     const response = await fetch(
-//       'https://dn5wcoauce.execute-api.us-east-2.amazonaws.com/dev/v1/auth/login',
-//      {
-//         method: 'POST',
-//          headers: { 'Content-Type': 'application/json' },
-//          body: JSON.stringify({username: email, password }),
-//        }
-//      );
-//      console.log("Payload:", { email, password });
-//      if (!response.ok) {
-//        throw new Error(`HTTP error! Status: ${response.status}`);
-//      }
-//      const data = await response.json();
-//      console.log('Login response:', data);
-//    } catch (error) {
-//      console.error('AUTH ERROR:', error);
-//    }
