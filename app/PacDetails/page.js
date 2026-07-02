@@ -27,47 +27,31 @@ export default function Home() {
         <a className="navbar-brand" href="#">EduSite</a>
       </nav> */}
 
-      <section className=" text-dark text-center ">
+      <section className=" text-dark text-center mb-0 mt-0 ">
          {/* header section */}
-        <div className='row'> 
-          <div className='col-4' >
-            <img
-            src="/images/Mlogo.png"
-            className="d-block w-100"
-            alt="Slide 2"
-            style={{ height: "185px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
-            />
+        <div className='row align-items-center'> 
+          <div className="col-md-4 col-12 text-center mb-0 mb-md-0">
+              <img
+                src="/images/Mlogo.png"
+                alt="Logo"
+                className="img-fluid rounded-3 d-block mx-auto 
+                w-75 w-md-50" 
+                style={{ maxHeight: "185px", objectFit: "cover" }}
+              />
+            </div>
+          <div className='col-md-8 col-12 '>
+            <div className="d-flex flex-wrap justify-content-end align-items-center gap-0">
+               <ContactHeader />
+               <div className="border-start border-2 border-warning  mx-0 " style={{ height: "40px" }}></div>
+               <SocialIcons />
+               <div className="border-start border-2 border-warning mx-0 " style={{ height: "40px" }}></div>
+              <UserHeader />
+            </div>
+            <div className="mt-3">
+              <SearchNav />
+            </div>
           
           </div>
-          <div className='flex-1 col-8 '>
-            <div className='d-flex align-items-center justify-content-end' >
-              <div className='d-flex align-items-center justify-content-end me-4 col-3' >
-                <ContactHeader />
-              </div>
-              <div className="border-start border-2 border-dark mx-0 bg-dark" style={{ height: "40px"  }}></div>
-              
-              <div className='d-flex align-items-center justify-content-center col-3'>
-                  <SocialIcons />
-              </div>
-              
-              <div className="border-start border-2 border-dark  mx-0 bg-dark" style={{ height: "40px" }}></div>
-              <div className='d-flex align-items-center'>
-                    {/* <LoginPopup /> */}
-                  <UserHeader />
-            
-               </div>
-            </div>
-             <br></br>
-              <div className='row '>
-                <div  className="col-3">
-                   
-                  </div>
-                  <div  className="col-9">
-                    <SearchNav />
-                  </div>
-                 
-                  </div>
-              </div>
         </div>
         
       </section>

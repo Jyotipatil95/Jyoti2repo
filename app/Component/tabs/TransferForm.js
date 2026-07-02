@@ -1,10 +1,13 @@
+import { useState } from "react";
+import { useRouter } from "next/navigation"
+import GuestRoomSelector from './GuestRoomSelector';
 export default function TransferForm() {
   return (
-    <div role="tabpanel" id="simple-tabpanel-0" aria-labelledby="simple-tab-0">
+    <div role="tabpanel" id="simple-tabpanel-0" aria-labelledby="simple-tab-0 ">
       <div className="container ">
         <form className="row g-3 align-items-end">
             {/* radio button */}
-            <div className="container my-0">
+            <div className="container my-1">
                  <fieldset className="border-0">
                  <div className="row align-items-start g-3">
 
@@ -51,11 +54,11 @@ export default function TransferForm() {
             </fieldset>
             </div>
          {/* origin and destination*/}
-            <div className="container my-4">
+            <div className="container my-1">
                  <fieldset className="border-0">
                  <div className="row align-items-start g-3">
 
-                <div className="col-md-5">
+                <div className="col-md-4">
                             <label className="form-label text-white fw-bold text-uppercase small">
                                origin
                             </label>
@@ -63,7 +66,7 @@ export default function TransferForm() {
                                <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                              <input
                               type="text"
-                              className="form-control rounded-pill ps-5"
+                              className="form-control rounded-pill ps-5 w-75"
                               placeholder="Select countries or destinations..."
                             />
                             </div>
@@ -71,7 +74,7 @@ export default function TransferForm() {
                 </div>
 
                 {/* Destination */}
-                <div className="col-md-5">
+                <div className="col-md-4">
                             <label className="form-label text-white fw-bold text-uppercase small">
                                Destinations
                             </label>
@@ -79,7 +82,7 @@ export default function TransferForm() {
                               <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                              <input
                               type="text"
-                              className="form-control rounded-pill ps-5"
+                              className="form-control rounded-pill ps-5 w-75"
                               placeholder="Select countries or destinations..."
                             />
                             </div>
@@ -91,26 +94,30 @@ export default function TransferForm() {
          
           {/* Arrival Date and Time  */}
           
-          <div className="col-md-4">
+          <div className="col-md-4 my-1">
             <label className="form-label text-white fw-bold text-uppercase small">
              Arrival Date and Time 
             </label>
+           <div className="d-flex gap-3">
             <input
               type="date"
               className="form-control rounded-pill"
-               placeholder="Select date"
+              placeholder="Select date"
+              style={{ width: "200px" }}
             />
             <input
               type="time"
               className="form-control rounded-pill"
-               placeholder="Select date"
+              placeholder="Select time"
+              style={{ width: "200px" }}
             />
-            {/* <div className="form-text">Select date</div> */}
+          </div>  
           </div>
 
           {/*Guest */}
           <div className="col-md-4">
-            <label className="form-label text-white fw-bold text-uppercase small">
+            <GuestRoomSelector/>
+            {/* <label className="form-label text-white fw-bold text-uppercase small">
               Guest
             </label>
             <select className="form-select rounded-pill">
@@ -124,7 +131,7 @@ export default function TransferForm() {
                 <option>8 passanger</option>
                 <option>9 passanger</option>
                 <option>10 passanger</option>
-            </select>
+            </select> */}
           </div>
 
           {/* Button */}

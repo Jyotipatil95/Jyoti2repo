@@ -34,52 +34,33 @@ export default function Home() {
         <a className="navbar-brand" href="#">EduSite</a>
       </nav> */}
 
-      <section className=" text-dark text-center mb-0 mt-0">
-         {/* header section */}
-        <div className='row'> 
-          <div className='col-4' >
-            <img
-            src="/images/Mlogo.png"
-            className="d-block w-100"
-            alt="Slide 2"
-            style={{ height: "185px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
-            />
-          
-          </div>
-          <div className='flex-1 col-8 '>
-            <div className='d-flex align-items-center justify-content-end' >
-              <div className='d-flex align-items-center justify-content-end me-4 col-3' >
-                <ContactHeader />
-              </div>
-              <div className="border-start border-2 border-warning  mx-0 " style={{ height: "40px" }}></div>
-              
-              <div className='d-flex align-items-center justify-content-center col-2 '>
-                
-                  <SocialIcons />
-              </div>
-              
-              <div className="border-start border-2 border-warning  mx-0 bg-dark" style={{ height: "40px" }}></div>
-              <div className='d-flex align-items-center justify-content-center col-3'>
-                  <LoginPopup />
-                  {/* <UserHeader />  */}
-                               
-               </div>
+    {/* header section */}
+       {/* Header Section */}
+        <section className="text-dark text-center mb-0 mt-0">
+          <div className="row align-items-center p-0 m-0">
+            <div className="col-md-4 col-12 text-center mb-0 mb-md-0 ">
+               <img
+                src="/images/Mlogo.png"
+                alt="Logo"
+                className="img-fluid rounded-3 d-block mx-auto w-75 w-md-75 logo-img"
+              />
             </div>
-            
-              <div className='row '>
-                 <div  className="col-1">
-                   
-                  </div>
-                  <div  className="col-11">
-                    <SearchNav />
-                  </div>
-                  
-                  </div>              </div>
-        </div>
-        
-      </section>
+            <div className="col-md-8 col-12">
+              <div className="d-flex flex-wrap justify-content-end align-items-center gap-lg-2 gap-0">
+                <ContactHeader />
+                 <div className="border-start border-2 border-warning  mx-0 " style={{ height: "30px" }}></div>
+                <SocialIcons />
+                <div className="border-start border-2 border-warning mx-0 " style={{ height: "30px" }}></div>
+                <LoginPopup />
+              </div>
+              <div className="mt-1">
+                <SearchNav />
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <section className="container my-2 mt-0">
+      <section className="container my-0 mt-0">
          {/* tab section */}
         <div className="row bg-info" style={{borderRadius: "40px"}}>
                   <div>
@@ -104,7 +85,7 @@ export default function Home() {
 
        {/* Image section */}
      
-      <section className="container my-4">
+      <section className="container my-1">
         
         <div className="row g-4">
             {/* <!-- Left Column --> */}
@@ -112,7 +93,7 @@ export default function Home() {
       
            {/* <!-- Package Offers --> */}
               
-           <div className="position-relative bg-warning text-white rounded-5 p-4" style={{height: "740px", width:"530px"}}>
+           <div className="position-relative bg-warning text-white rounded-5 no-top-left p-4" style={{height: "740px", width:"530px"}}>
               <div >
                 <h2 className=" top-0 start-0 px-4 py-1 fw-bold text-uppercase display-4 z-2">
                   PACKAGE OFFERS
@@ -145,9 +126,9 @@ export default function Home() {
                   <span className="position-absolute top-0 start-0 text-uppercase fw-bold text-white display-4 px-3 py-2">
                       excursions
                   </span>
-                 <img src="/images/photo4.jpeg" alt="Excursions" className="img-fluid rounded-5"
+                 <img src="/images/photo4.jpeg" alt="Excursions" className="img-fluid rounded-5 no-bottom-right"
                   style={{ height: "300px", width: "90%", objectFit: "cover", display: "block" }}/>
-             </div>
+            </div>
 
             {/* <!-- Adventure --> */}
             <div className="position-relative d-none d-md-block text-uppercase">
@@ -167,8 +148,8 @@ export default function Home() {
           <div className="p-0 m-0 "style={{ lineHeight: 0 }}>
             <img
             src="/images/caribe22.png"
-            className="d-block w-100 img-fluid rounded-5 mx-auto p-1 m-0"
-            style={{ height: "400px", width: "60%", objectFit: "cover", display: "block" }}
+            className="d-block w-100 img-fluid mx-auto p-1 m-0 no-bottom-left"
+            style={{ height: "350px", width: "60%", objectFit: "cover", display: "block", borderRadius: "80px" }}
             alt="Caribe"
             
           />
@@ -177,8 +158,8 @@ export default function Home() {
             <img
          
             src="/images/europa2.png"
-            className="d-block w-100 img-fluid rounded-5 p-1 m-0"
-            style={{ height: "400px", width: "50%", objectFit: "cover" }}
+            className="d-block w-100 img-fluid p-1 m-0 no-bottom-left"
+            style={{ height: "350px", width: "50%", objectFit: "cover" , borderRadius: "80px"}}
             alt="Europa"
           />
           </div>
@@ -186,15 +167,15 @@ export default function Home() {
             <img
          
             src="/images/asia2.png"
-            className="d-block w-100 img-fluid rounded-5 p-1 m-0"
-            style={{ height: "400px", width: "50%", objectFit: "cover" }}
+            className="d-block w-100 img-fluid p-1 m-0 no-bottom-left"
+            style={{ height: "350px", width: "50%", objectFit: "cover", borderRadius: "80px" }}
             alt="Europa"
           /></div>
          <div>
            <img
             src="/images/africa2.png"
-            className="d-block w-100 img-fluid rounded-5 p-1 m-0"
-            style={{ height: "400px", width: "50%", objectFit: "cover" }}
+            className="d-block w-100 img-fluid p-1 m-0 no-bottom-left"
+            style={{ height: "350px", width: "50%", objectFit: "cover", borderRadius: "80px" }}
             alt="Africa"
           />
          </div>
@@ -247,10 +228,12 @@ export default function Home() {
       
        
       </section>
+      {/* Disney section */}
+      
       {/* script section */}
               <section className="text-center p-4">
           <h2 className="fw-bold mb-3" style={{color: "rgb(255, 101, 0)"}}>Who we are</h2>
-          <p className="fs-5 text-center text-primary">
+          <p className="fs-5 text-center" style={{ color: "darkblue" }}>
            “Lorem ipsum dolor sit amet, consectetur adipisicing elit. She herself, out of. Exceptions follow from perspiration, together with holding, the harshness of things, fugitives, or this matter, the least, repelling ours, not! The spirit comes from below, exceptions endure, delight is similar, the same softness of labor, the place prevents the level, the porch illuminates, life wants anyone, is expedient, to a coming, or worthy, unless just the whole? The shoulder is less toward, the pain excepts, the rougher things are, than labor, indeed expedient, the support, those very words, the harshness corrupts, even comes? Nothing flees, the accusation repels, the fullness repels, but which things, which consequences, the roughness provides, the solution, the pleasure assumes, the labor is named, the value is sought, because it hates, the veil, indeed comes. The body follows.”
           </p>
         </section>

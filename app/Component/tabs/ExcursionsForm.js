@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getNames } from "country-list";
-
+import GuestRoomSelector from './GuestRoomSelector';
 export default function ExcursionsForm() {
 
   const countries = getNames();
@@ -61,24 +61,9 @@ export default function ExcursionsForm() {
             />
             {/* <div className="form-text">Select date</div> */}
           </div>
-          {/* Number of Nights */}
+          {/* Number of guest */}
           <div className="col-md-2">
-            <label className="form-label text-white fw-bold text-uppercase small">
-              Guests
-            </label>
-            <select className="form-select rounded-pill">
-              <option>1 Guest</option>
-              <option>2 Guests</option>
-              <option>3 Guests</option>
-              <option>4 Guests</option>
-              <option>5 Guests</option>
-              <option>6 Guests</option>
-              <option>7 Guests</option>
-              <option>8 Guests</option>
-              <option>9 Guests</option>
-              <option>10 Guests</option>
-              
-            </select>
+            <GuestRoomSelector/>
           </div>
 
           {/* Button */}

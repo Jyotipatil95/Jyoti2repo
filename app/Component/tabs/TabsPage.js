@@ -5,6 +5,7 @@ import ExcursionsForm from './ExcursionsForm';
 import HotelsStaysForm from './ExcursionsForm';
 import CarRentalForm from './CarRentalForm';
 import TransferForm from './TransferForm';
+import CruiseForm from './CruiseForm';
 import EventForm from './EventForm';
 import HotelTransportationForm from './HotelTransportationForm';
 import AccommodationForm from './AccommodationForm';
@@ -54,14 +55,7 @@ const items = [
     title: <h5 className="text-white fs-6">Cruises</h5>,
      icon: '/images/cruise1.png',
     content: (
-      <div className='border-2 border-blue-400 rounded-lg p-4'>
-        <h1 className='text-3xl text-blue-600'>Title Test 4</h1>
-        <p>
-          Lorem ipsum dolor sit ue architecto dolorum, minima enim quidem
-          voluptatibus at nulla deleniti harum! Totam, mollitia quos voluptatem
-          deleniti provident obcaecati rerum.
-        </p>
-      </div>
+      <CruiseForm/>
     ),
   },
   { 

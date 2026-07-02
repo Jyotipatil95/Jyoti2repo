@@ -41,7 +41,7 @@ export default function EventForm() {
             </fieldset>
             </div>
          {/* date*/}
-            <div className="container my-4">
+            <div className="container my-1">
                  <fieldset className="border-0">
                  <div className="row align-items-start g-3">
 
@@ -69,6 +69,7 @@ export default function EventForm() {
                 </div>
                 {/* Button */}
                    <div className="col-md-3 d-grid">
+                    <br></br>
                      <button
                        type="button"
                        className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"

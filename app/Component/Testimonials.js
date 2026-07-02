@@ -20,8 +20,8 @@ export default function Testimonials() {
                     className="rounded-circle mb-3"
                     style={{ width: "150px", height: "150px", objectFit: "cover" }}
                   />
-                  <p className="text-warning fs-5">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+                  <p className="text-warning fs-7">
+                    “Pain itself, it is important to sit, to be connected with learning, but do not let it be easy, for it will bring about great labor and sorrow…”
                   </p>
                 </div>
               </div>
@@ -35,8 +35,8 @@ export default function Testimonials() {
                     className="rounded-circle mb-3"
                     style={{ width: "150px", height: "150px", objectFit: "cover" }}
                   />
-                  <p className="text-warning fs-5">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed.
+                  <p className="text-warning fs-7">
+                    “Pain itself, it is important to sit, to be connected with learning, but…”
                   </p>
                 </div>
               </div>
@@ -50,8 +50,8 @@ export default function Testimonials() {
                     className="rounded-circle mb-3"
                     style={{ width: "150px", height: "150px", objectFit: "cover" }}
                   />
-                  <p className="text-warning fs-5">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+                  <p className="text-warning fs-7">
+                    “Pain itself, it is important to sit, to be connected with learning, but to do the passage of time.”
                   </p>
                 </div>
               </div>
@@ -65,8 +65,8 @@ export default function Testimonials() {
                     className="rounded-circle mb-3"
                     style={{ width: "150px", height: "150px", objectFit: "cover" }}
                   />
-                  <p className="text-warning fs-5">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+                  <p className="text-warning fs-7">
+                    “Pain itself, it is important to sit, to be connected with learning, but to do practice.”
                   </p>
                 </div>
               </div>
@@ -84,7 +84,7 @@ export default function Testimonials() {
                     className="rounded-circle mb-3"
                     style={{ width: "150px", height: "150px", objectFit: "cover" }}
                   />
-                  <p className="text-warning fs-5">
+                  <p className="text-warning fs-7">
                     One more testimony to complete five people.
                   </p>
                 </div>

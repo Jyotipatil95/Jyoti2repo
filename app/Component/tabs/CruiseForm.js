@@ -2,8 +2,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import GuestRoomSelector from './GuestRoomSelector';
-export default function HotelTransportationForm() {
+export default function CruiseForm() {
 const [open, setOpen] = useState(false);
+const [nights, setNights] = useState("1");
+ const [date, setDate] = useState("");
 const router = useRouter();
   return (
     <div role="tabpanel" id="simple-tabpanel-0" aria-labelledby="simple-tab-0">
@@ -24,7 +26,7 @@ const router = useRouter();
                              <input
                               type="text"
                               className="form-control rounded-pill ps-5"
-                              placeholder="Select country..."
+                              placeholder="Select countries or destinations..."
                             />
                             </div>
                            
@@ -33,16 +35,43 @@ const router = useRouter();
                 {/* Destination */}
                 <div className="col-md-3">
                             <label className="form-label text-white fw-bold text-uppercase small">
-                               Class
+                              Cruise Line
                             </label>
                             <select className="form-select rounded-pill">
-                                            <option>1 Economic</option>
-                                            <option>2 Executive</option>
-                                            <option>3 First Class</option>
-                                            <option>4 Premium</option>
-                                            <option>5 Luxury</option>
-                             </select>
+                                            <option>1 Royal Caribbean</option>
+                                            <option>2 MSC</option>
+                                            <option>3 Carnival</option>
+                            </select>
                 </div>
+                {/* Nights */}
+                <div className="col-md-3">
+                    <label className="form-label text-white fw-bold text-uppercase small">
+                    Number of Nights
+                    </label>
+                    <select
+                    className="form-select rounded-pill"
+                    value={nights}
+                    onChange={(e) => setNights(e.target.value)}
+                    >
+                    {[...Array(10)].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                        {i + 1} nights
+                        </option>
+                    ))}
+                    </select>
+                </div>
+                {/* Date */}
+          <div className="col-md-3">
+            <label className="form-label text-white fw-bold text-uppercase small">
+             Departure Date
+            </label>
+            <input
+              type="date"
+              className="form-control rounded-pill"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
             </div>
             </fieldset>
             </div>
@@ -53,14 +82,14 @@ const router = useRouter();
 
                 <div className="col-md-3">
                             <label className="form-label text-white fw-bold text-uppercase small">
-                               origin
+                               Departure Port
                             </label>
                             <div className="position-relative">
                               <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                             <input
                               type="text"
                               className="form-control rounded-pill ps-5"
-                              placeholder="Select country..."
+                              placeholder="Name of port"
                             />
                             </div>
                             
@@ -69,14 +98,14 @@ const router = useRouter();
                 {/* Destination */}
                 <div className="col-md-3">
                             <label className="form-label text-white fw-bold text-uppercase small">
-                               Destinations
+                              Destination Ports
                             </label>
                             <div  className="position-relative">
                                <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                               <input
                               type="text"
                               className="form-control rounded-pill ps-5"
-                              placeholder="Select countries or destinations..."
+                              placeholder="Name of port"
                             />
                             </div>
                             
@@ -86,13 +115,12 @@ const router = useRouter();
                       <GuestRoomSelector/>
                 </div>
                   {/* Button */}
-             <div className="col-md-3 d-grid">
-              <br></br>
-            <button
-              type="button"
-              className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
-                onClick={() => router.push("/HotelTransDetails")}
-              >
+             <div className="col-md-3 d-flex flex-column">
+                <button
+                    type="button"
+                    className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2 mt-4"
+                    onClick={() => router.push("/HotelTransDetails")}
+                >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -106,7 +134,7 @@ const router = useRouter();
               </svg>
               <span>Search</span>
             </button>
-          </div>
+            </div>
             </div>
             </fieldset>
             </div>

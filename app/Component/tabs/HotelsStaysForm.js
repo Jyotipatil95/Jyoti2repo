@@ -12,7 +12,7 @@ export default function HotelsStaysForm() {
             <input
               type="text"
               className="form-control rounded-pill"
-              placeholder="Select countries or destinations..."
+              placeholder="Select country..."
             />
           </div>
 
