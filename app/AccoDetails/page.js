@@ -9,7 +9,7 @@ import SocialIcons from "../Component/SocialIcons";
 import UserHeader from "../Component/UserHeader";
 import SearchNav from "../Component/SearchNav";
 import TabsPage from '../Component/tabs/TabsPage';
-import HotelOffer from "../Component/HotelOffer";
+import AccoOffer from "../Component/AccoOffer";
 import FilterPanel from "../Component/FilterPanel";
 import OrderPopup from "../Component/OrderPopup";
 import Footer from "../Component/Footer";
@@ -28,13 +28,15 @@ export default function Home() {
       <section className=" text-dark text-center ">
          {/* header section */}
         <div className='row'> 
-          <div className="col-md-4 col-12 text-center mb-0 mb-md-0 ">
-               <img
-                src="/images/Mlogo.png"
-                alt="Logo"
-                className="img-fluid rounded-3 d-block mx-auto w-75 w-md-75 logo-img"
-              />
-            </div>
+          <div className='col-4' >
+            <img
+            src="/images/Mlogo.png"
+            className="d-block w-100"
+            alt="Slide 2"
+            style={{ height: "200px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
+            />
+          
+          </div>
           <div className='flex-1 col-8 '>
             <div className='d-flex align-items-center justify-content-end' >
               <div className='d-flex align-items-center me-4 col-3' >
@@ -86,7 +88,7 @@ export default function Home() {
         {/* Offer list */}
       <section>
         {/* <FilterPanel /> */}
-         <HotelOffer /> 
+         <AccoOffer/> 
       </section>
       <section>
         <Footer />

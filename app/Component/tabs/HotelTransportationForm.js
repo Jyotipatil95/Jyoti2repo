@@ -2,8 +2,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import GuestRoomSelector from './GuestRoomSelector';
+import { getNames } from "country-list";
 export default function HotelTransportationForm() {
+const countries = getNames();
 const [open, setOpen] = useState(false);
+const [country, setCountry] = useState("");
 const router = useRouter();
   return (
     <div role="tabpanel" id="simple-tabpanel-0" aria-labelledby="simple-tab-0">
@@ -21,11 +24,18 @@ const router = useRouter();
                             </label>
                             <div className="position-relative">
                               <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                             <input
-                              type="text"
-                              className="form-control rounded-pill ps-5"
-                              placeholder="Select country..."
-                            />
+                            <select
+                className="form-control rounded-pill ps-5"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option value="">Select country...</option>
+                {countries.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
                             </div>
                            
                 </div>

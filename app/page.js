@@ -33,8 +33,6 @@ export default function Home() {
       {/* <nav className="navbar navbar-dark bg-dark p-3">
         <a className="navbar-brand" href="#">EduSite</a>
       </nav> */}
-
-    {/* header section */}
        {/* Header Section */}
         <section className="text-dark text-center mb-0 mt-0">
           <div className="row align-items-center p-0 m-0">

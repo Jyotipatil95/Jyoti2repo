@@ -82,27 +82,61 @@ export default function ExcursionsForm() {
             </select> */}
           </div>
 
+          
           {/* Button */}
-          <div className="col-md-2 d-grid">
-            <button
-              type="button"
-              className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
-             onClick={() => router.push("/ExcuDetails")}
+        <div className="col-md-2 d-grid">
+          <button
+            type="button"
+            className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
+            onClick={async () => {
+              try {
+                const res = await fetch(
+                  "https://m005t6x6wj.execute-api.us-east-2.amazonaws.com/dev/search",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      search_data: {
+                        start: "2026-12-01",
+                        end: "2026-12-05",
+                        pole: "fDEwNzkxLVJlc3RlbA==",
+                        composition: [{ adults: 2, children: 0, ages: [] }],
+                        currency: "USD",
+                        language: "en",
+                        page: "1",
+                        limit: "100"
+                      }
+                    }),
+                  }
+                );
+
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+
+                const data = await res.json();
+                const parsedBody = JSON.parse(data.body);
+
+                console.log(parsedBody.data.products); // verify response
+                router.push("/AccoDetails"); // navigate after successful fetch
+              } catch (error) {
+                console.error("Error fetching search:", error);
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="orange"
+              className="bi bi-search"
+              viewBox="0 0 16 16"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="orange"
-                className="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11 6a5 5 0 1 0-1.001 9.9A5 5 0 0 0 11 6zm-1 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
-                <path d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.415 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-              </svg>
-              <span>Search</span>
-            </button>
-          </div>
+              <path d="M11 6a5 5 0 1 0-1.001 9.9A5 5 0 0 0 11 6zm-1 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
+              <path d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.415 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+            </svg>
+            <span>Search</span>
+          </button>
+        </div>
+
 
         </form>
       </div>
