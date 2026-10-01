@@ -94,7 +94,7 @@ export default function Settings() {
       <Row>
         <Col>
           <Card className="p-3">
-            <h5>Background</h5>
+            <h5>Background Image</h5>
             <img
               src={settings.backgroundUrl}
               alt="Background"
