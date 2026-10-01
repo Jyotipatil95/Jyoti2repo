@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-
+import { Suspense } from 'react';
 import Navbar from "../Component/Navbar";
 import Navbar2 from "../Component/Navbar2";
 import Carousel from "../Component/Carousel";
@@ -66,11 +66,12 @@ export default function Home() {
       </section>
       {/* filter section */}
       
-        {/* Offer list */}
-      <section>
-        {/* <FilterPanel /> */}
-         <AccoOffer/> 
-      </section>
+       {/* Offer list wrapped in Suspense */}
+        <section>
+          <Suspense fallback={<div>Loading offers...</div>}>
+            <AccoOffer />
+          </Suspense>
+        </section>
       <section>
         <Footer />
       </section>
