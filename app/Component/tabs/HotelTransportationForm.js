@@ -101,7 +101,8 @@ const router = useRouter();
             <button
               type="button"
               className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
-                onClick={() => router.push("/HotelTransDetails")}
+              onClick={() => router.push("/SettingDetails")}
+              // onClick={() => router.push("/HotelTransDetails")}
               >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

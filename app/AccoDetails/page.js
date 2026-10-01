@@ -13,6 +13,8 @@ import AccoOffer from "../Component/AccoOffer";
 import FilterPanel from "../Component/FilterPanel";
 import OrderPopup from "../Component/OrderPopup";
 import Footer from "../Component/Footer";
+import LoginPopup from "../Component/Login/LoginPopup";
+import "../awsConfig"; // ensure Amplify is configured
 export default function Home() {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -24,51 +26,30 @@ export default function Home() {
       {/* <nav className="navbar navbar-dark bg-dark p-3">
         <a className="navbar-brand" href="#">EduSite</a>
       </nav> */}
-
-      <section className=" text-dark text-center ">
-         {/* header section */}
-        <div className='row'> 
-          <div className='col-4' >
-            <img
-            src="/images/Mlogo.png"
-            className="d-block w-100"
-            alt="Slide 2"
-            style={{ height: "200px",width:"40%",borderRadius: "20px",objectFit: "cover" }}
-            />
-          
-          </div>
-          <div className='flex-1 col-8 '>
-            <div className='d-flex align-items-center justify-content-end' >
-              <div className='d-flex align-items-center me-4 col-3' >
-                <ContactHeader />
-              </div>
-              <div className="border-start border-2 border-dark mx-0 bg-dark" style={{ height: "40px"  }}></div>
-              
-              <div className='d-flex align-items-center justify-content-center col-3'>
-                  <SocialIcons />
-              </div>
-              
-              <div className="border-start border-2 border-dark  mx-0 bg-dark" style={{ height: "40px" }}></div>
-              <div className='d-flex align-items-center'>
-
-                  <UserHeader />
-            
-               </div>
-            </div>
-             <br></br>
-              <div className='row '>
-                <div  className="col-3">
-                   
+ {/* Header Section */}
+       <section className="text-dark text-center mb-0 mt-0">
+                <div className="row align-items-center p-0 m-0">
+                  <div className="col-md-4 col-12 text-center mb-0 mb-md-0 ">
+                     <img
+                      src="/images/Mlogo.png"
+                      alt="Logo"
+                      className="img-fluid rounded-3 d-block mx-auto w-75 w-md-75 logo-img"
+                    />
                   </div>
-                  <div  className="col-9">
-                    <SearchNav />
+                  <div className="col-md-8 col-12">
+                    <div className="d-flex flex-wrap justify-content-end align-items-center gap-lg-2 gap-0">
+                      <ContactHeader />
+                       <div className="border-start border-2 border-warning  mx-0 " style={{ height: "30px" }}></div>
+                      <SocialIcons />
+                      <div className="border-start border-2 border-warning mx-0 " style={{ height: "30px" }}></div>
+                      <LoginPopup />
+                    </div>
+                    <div className="mt-1">
+                      <SearchNav />
+                    </div>
                   </div>
-                 
-                  </div>
-              </div>
-        </div>
-        
-      </section>
+                </div>
+              </section>
 
       <section className="container my-0 m-0">
          {/* tab section */}

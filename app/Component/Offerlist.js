@@ -43,32 +43,6 @@ function OffersContent({ offer }) {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
 
-  //use query parameter
-
-  // const { country, date, nights } = router.query;
-  // const [offers, setOffers] = useState([]);
-  // const [filteredOffers, setFilteredOffers] = useState([]);
-  // const [visibleCount, setVisibleCount] = useState(5);
-
-  // useEffect(() => {
-  //   // Fetch all offers from your API
-  //   fetch("/api/offers")
-  //     .then(res => res.json())
-  //     .then(data => setOffers(data))
-  //     .catch(err => console.error(err));
-  // }, []);
-
-  // useEffect(() => {
-  //   if (offers.length > 0 && country && date && nights) {
-  //     const filtered = offers.filter(
-  //       offer =>
-  //         offer.country.toLowerCase() === country.toLowerCase() &&
-  //         offer.nights.toString() === nights
-  //     );
-  //     setFilteredOffers(filtered);
-  //   }
-  // }, [offers, country, date, nights]);
-
   const allOffers = [
     {
       id: 1,
@@ -146,7 +120,7 @@ function OffersContent({ offer }) {
     }
   }, []);
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + Number(item.price || 0), 0);
 
   const handleFilter = (filters) => {
     const result = allOffers.filter(
@@ -164,29 +138,43 @@ function OffersContent({ offer }) {
   };
 
   const handleAddToCart = (selectedItem) => {
-    setAddedItem(selectedItem.id);
+    // 1. Create a foolproof unique ID fallback
+    const uniqueId = selectedItem.id || `offer_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    
+    const itemWithId = {
+      ...selectedItem,
+      id: uniqueId,
+      title: selectedItem.title || selectedItem.name,
+    };
+
+    setAddedItem(uniqueId);
     setTimeout(() => setAddedItem(null), 2500);
 
-    setCart((prevCart) => {
-      if (prevCart.find((item) => item.id === selectedItem.id)) {
-        setMessage(`${selectedItem.title} is already in your cart`);
-        setTimeout(() => setMessage(null), 3000);
-        return prevCart;
-      }
-      const updated = [...prevCart, selectedItem];
-      localStorage.setItem("cart", JSON.stringify(updated));
-      setMessage(`${selectedItem.title} has been added to your cart`);
+    // 2. Fetch latest cart directly from localStorage to ensure multi-item stacking
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const isAlreadyInCart = existingCart.some((item) => item.id === itemWithId.id);
+
+    if (isAlreadyInCart) {
+      setMessage(`${itemWithId.title} is already in your cart`);
       setTimeout(() => setMessage(null), 3000);
-      return updated;
-    });
+      return;
+    }
+
+    const updatedCart = [...existingCart, itemWithId];
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCart(updatedCart);
+
+    setMessage(`${itemWithId.title} has been added to your cart`);
+    setTimeout(() => setMessage(null), 3000);
   };
 
   const handleRemoveFromCart = (id) => {
-    setCart((prevCart) => {
-      const updated = prevCart.filter((item) => item.id !== id);
-      localStorage.setItem("cart", JSON.stringify(updated));
-      return updated;
-    });
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updated = existingCart.filter((item) => item.id !== id);
+    localStorage.setItem("cart", JSON.stringify(updated));
+    setCart(updated);
   };
 
   const handleBookNow = (o) => {
@@ -236,7 +224,6 @@ function OffersContent({ offer }) {
         </div>
       )}
 
-      {/* Renders cleanly using one map block variant instead of repeating mapping blocks */}
       <div className="row g-4">
         {filteredOffers.slice(0, visibleCount).map((item) => (
           <div className="col-12 mb-3" key={item.id}>
@@ -268,7 +255,7 @@ function OffersContent({ offer }) {
                         🏖️ Includes activities
                       </span>
                     </div>
-                    <p className="text-muted mb-1"><strong>Destination:</strong> {item.destination}</p>
+                    <p className="text-muted mb-1"><strong>Destination:</strong> {typeof item.destination === "object" ? item.destination?.name : item.destination}</p>
                     <p className="text-muted mb-1"><strong>Dates:</strong> {item.dates}</p>
                     <p className="text-muted mb-1"><strong>Nights:</strong> {item.nights}</p>
                     <p className="text-muted mb-1"><strong>Category:</strong> {item.category}</p>
@@ -317,7 +304,7 @@ function OffersContent({ offer }) {
           </button>
         </div>
       )}
-  
+ 
       {showPopup && (
         <BookingSummary show={showPopup} onClose={() => setShowPopup(false)} offer={selectedOffer} />
       )}
@@ -334,11 +321,11 @@ function OffersContent({ offer }) {
           ) : (
             <>
               <ul className="list-group mb-3">
-                {cart.map((cartItem) => (
-                  <li key={cartItem.id} className="list-group-item d-flex justify-content-between align-items-center py-3">
+                {cart.map((cartItem, index) => (
+                  <li key={cartItem.id || index} className="list-group-item d-flex justify-content-between align-items-center py-3">
                     <div>
                       <strong>{cartItem.title}</strong>
-                      <div className="small text-muted">{cartItem.destination}</div>
+                      <div className="small text-muted">{typeof cartItem.destination === "object" ? cartItem.destination?.name : cartItem.destination}</div>
                     </div>
                     <div className="text-end">
                       <span className="badge bg-primary me-2 d-inline-block mb-1">${cartItem.price}</span>
@@ -354,7 +341,7 @@ function OffersContent({ offer }) {
                   <span>Total:</span>
                   <span>${totalPrice}</span>
                 </h5>
-                <button className="btn btn-success w-100 rounded-pill py-2 fw-bold">Checkout</button>
+                <button className="btn btn-success w-100 rounded-pill py-2 fw-bold" onClick={() => router.push("/CartList")}>Go to Cart & Checkout</button>
               </div>
             </>
           )}
@@ -363,7 +350,7 @@ function OffersContent({ offer }) {
 
       {/* Floating View Cart Trigger Button */}
       <button
-        className="btn btn-primary fw-bold rounded-pill position-relative bottom-0 end-0 m-4 px-4 py-2 shadow-lg"
+        className="btn btn-primary fw-bold rounded-pill position-fixed bottom-0 end-0 m-4 px-4 py-2 shadow-lg"
         style={{ zIndex: 1040 }}
         data-bs-toggle="offcanvas"
         data-bs-target="#cartSidebar"

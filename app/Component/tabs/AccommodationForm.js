@@ -1,44 +1,148 @@
 "use client";
+
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { getNames } from "country-list";
-import GuestRoomSelector from './GuestRoomSelector';
-export default function ExcursionsForm() {
-
+import { useRouter } from "next/navigation"; // 1. Import useRouter
+import GuestRoomSelector from "./GuestRoomSelector";
+import { poleMap } from "../Pole/poleMap";
+export default function AccommodationSearchPage() {
+  const router = useRouter(); // 2. Initialize router
   const countries = getNames();
-  const [country, setCountry] = useState("");
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
-  return (
-    <div role="tabpanel" id="simple-tabpanel-0" aria-labelledby="simple-tab-0">
-      <div className="container ">
-        <form className="row g-3 align-items-end">
 
-          {/* Countries or Destinations */}
+  const [country, setCountry] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [composition, setComposition] = useState([
+    { adults: 2, children: 0, ages: [] },
+  ]);
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  const poleValue = poleMap[country] || btoa(country);
+
+  const searchPayload = {
+    search_data: {
+      start: checkIn,
+      end: checkOut,
+      destination: country,
+      pole: poleValue,   // ✅ use fallback
+      composition,
+      currency: "USD",
+      language: "en",
+      page: "1",
+      limit: "100",
+    },
+  };
+
+  try {
+    console.log("Sending payload:", searchPayload);
+    const res = await fetch("https://m005t6x6wj.execute-api.us-east-2.amazonaws.com/dev/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(searchPayload),
+    });
+    
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+
+    const data = await res.json();
+    const parsedBody = typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+    const products = parsedBody?.data?.products || [];
+
+    console.log("RAW API DATA:", data);
+
+    sessionStorage.clear();
+    sessionStorage.setItem("searchOffers", JSON.stringify(products));
+    sessionStorage.setItem("searchCountry", country);
+    sessionStorage.setItem("searchDates", JSON.stringify({ checkIn, checkOut }));
+
+   router.push(`/AccoDetails?t=${Date.now()}`);
+  } catch (error) {
+    console.error("Error fetching offers:", error);
+  }
+  finally {
+      // Ensure loading state resets whether it succeeds or fails
+      setLoading(false);
+    }
+};
+
+  // const handleSearch = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   const poleValue = poleMap[country] || btoa(country); 
+
+  //   const searchPayload = {
+  //     search_data: {
+  //       start: checkIn,
+  //       end: checkOut,
+  //       destination: country,
+  //       pole:poleValue,   // ✅ lookup pole by country
+  //       composition: composition,
+  //       currency: "USD",
+  //       language: "en",
+  //       page: "1",
+  //       limit: "100",
+  //     },
+  //   };
+
+  //   try {
+  //     const res = await fetch(
+  //       "https://m005t6x6wj.execute-api.us-east-2.amazonaws.com/dev/search",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(searchPayload),
+  //       }
+  //     );
+
+  //     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+
+  //     const data = await res.json();
+  //     const parsedBody = JSON.parse(data.body);
+  //     const products = parsedBody.data?.products || [];
+
+  //     // 3. Store results and metadata in sessionStorage so the results page can access them
+  //     sessionStorage.setItem("searchOffers", JSON.stringify(products));
+  //     sessionStorage.setItem("searchCountry", country);
+
+  //     // 4. Navigate to the results page
+  //      router.push("/AccoDetails");
+  //   } catch (error) {
+  //     console.error("Error fetching offers:", error);
+  //     setLoading(false);
+  //   }
+  // };
+
+  return (
+    <main className="container my-0">
+      <div className="bg-info p-2 rounded-4 shadow-sm mb-4">
+        <form className="row g-3 align-items-end" onSubmit={handleSearch}>
+          {/* Destination Field */}
           <div className="col-md-3">
             <label className="form-label text-white fw-bold text-uppercase small">
               To
             </label>
-            <div className="position-relative">
-               <i className="bi bi-geo-alt text-black position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                <select
-                className="form-control rounded-pill ps-5"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              >
-                <option value="">Where are you going?</option>
-                {countries.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            
-            </div>
-            
+            <select
+              className="form-control rounded-pill ps-5"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Where are you going?
+              </option>
+              {countries.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* When */}
+          {/* Check-in Field */}
           <div className="col-md-2">
             <label className="form-label text-white fw-bold text-uppercase small">
               Check-in
@@ -46,100 +150,49 @@ export default function ExcursionsForm() {
             <input
               type="date"
               className="form-control rounded-pill"
-               placeholder="Select date"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              required
             />
-            {/* <div className="form-text">Select date</div> */}
           </div>
-            <div className="col-md-2">
+
+          {/* Check-out Field */}
+          <div className="col-md-2">
             <label className="form-label text-white fw-bold text-uppercase small">
-             Check-out
+              Check-out
             </label>
             <input
               type="date"
               className="form-control rounded-pill"
-               placeholder="Select date"
+              value={checkOut}
+              min={checkIn}
+              onChange={(e) => setCheckOut(e.target.value)}
+              required
             />
-            {/* <div className="form-text">Select date</div> */}
-          </div>
-          {/* Number of Guests */}
-          <div className="col-md-2">
-            <GuestRoomSelector/>
-            {/* <label className="form-label text-white fw-bold text-uppercase small">
-             Select Guests
-            </label>
-            <select className="form-select rounded-pill">
-              <option>1 Guest</option>
-              <option>2 Guests</option>
-              <option>3 Guests</option>
-              <option>4 Guests</option>
-              <option>5 Guests</option>
-              <option>6 Guests</option>
-              <option>7 Guests</option>
-              <option>8 Guests</option>
-              <option>9 Guests</option>
-              <option>10 Guests</option>
-              
-            </select> */}
           </div>
 
-          
-          {/* Button */}
-        <div className="col-md-2 d-grid">
-          <button
-            type="button"
-            className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
-            onClick={async () => {
-              try {
-                const res = await fetch(
-                  "https://m005t6x6wj.execute-api.us-east-2.amazonaws.com/dev/search",
-                  {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      search_data: {
-                        start: "2026-12-01",
-                        end: "2026-12-05",
-                        pole: "fDEwNzkxLVJlc3RlbA==",
-                        composition: [{ adults: 2, children: 0, ages: [] }],
-                        currency: "USD",
-                        language: "en",
-                        page: "1",
-                        limit: "100"
-                      }
-                    }),
-                  }
-                );
+          {/* Guests Selector */}
+          <div className="col-md-3">
+            <GuestRoomSelector onChange={(comp) => setComposition(comp)} />
+          </div>
 
-                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-
-                const data = await res.json();
-                const parsedBody = JSON.parse(data.body);
-
-                console.log(parsedBody.data.products); // verify response
-                router.push("/AccoDetails"); // navigate after successful fetch
-              } catch (error) {
-                console.error("Error fetching search:", error);
-              }
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="orange"
-              className="bi bi-search"
-              viewBox="0 0 16 16"
+          {/* Submit Search Button */}
+         
+          <div className="col-md-2 d-grid">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-outline-primary fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
             >
-              <path d="M11 6a5 5 0 1 0-1.001 9.9A5 5 0 0 0 11 6zm-1 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
-              <path d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.415 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-            </svg>
-            <span>Search</span>
-          </button>
-        </div>
-
-
+              {loading ? (
+                <span className="spinner-border spinner-border-sm" role="status"></span>
+              ) : (
+                <span>{loading ? "Searching..." : "Search"}</span>
+              )}
+            </button>
+          </div> 
         </form>
       </div>
-    </div>
+    </main>
   );
 }
